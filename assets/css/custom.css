@@ -1,0 +1,16 @@
+.find-string {
+    border-bottom: 3px solid darkslategray;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    position: relative;
+    outline: none;
+    padding: 20px;
+    height: 40px;
+    vertical-align: center;
+
+}
+
+.content-width {
+    width: 100px;
+}

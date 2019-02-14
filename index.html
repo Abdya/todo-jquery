@@ -9,18 +9,44 @@
 
         <title>Fucking todos jQuery</title>
     </head>
+
+    <!------ Include the above in your HEAD tag ---------->
     <body>
-    <div class="row justify-content-center">
-        <div class="col-md-4">
-            <div class="mb-3 mt-5">
-                <input type="text" class="find-string" placeholder="Find your todo">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="todolist not-done">
+                        <h1>Todos</h1>
+                        <input type="text"  id="newTodo" class="form-control add-todo" placeholder="Add todo">
+                        <button id="checkAll" class="btn btn-success">Mark all as done</button>
+
+                        <hr>
+                        <ul id="sortable" class="list-unstyled">
+                            <li class="ui-state-default">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" value="" />Take out the trash</label>
+                                </div>
+                            </li>
+                        </ul>
+                        <div class="todo-footer">
+                            <strong><span id="count-todos"></span></strong> Items Left
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="todolist">
+                        <h1>Already Done</h1>
+                        <ul id="done-items" class="list-unstyled">
+                            <li>Some item <button class="remove-item btn btn-default btn-xs pull-right"><span class="glyphicon glyphicon-remove"></span></button></li>
+
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="row justify-content-center">
-
-    </div>
-
+        <script src="main.js"></script>
+        <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     </body>
-    <script src="main.js"></script>
 </html>

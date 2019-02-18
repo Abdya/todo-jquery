@@ -1,4 +1,4 @@
-$(function() {
+$(document).ready(function() {
     let listOfTodos = [
         {
             title: "FUCK EVERYONE WHO WILL READ THIS!!!",
@@ -22,38 +22,47 @@ $(function() {
         }
     ];
 
-    let objList = () => {
+/*    let objList = () => {
         return listOfTodos;
-    };
+    };*/
 
     function takeInputData(){
-        let tmp = {
+        var tmpObj = {
             title: $("#newTodo").val(),
             createdAt: new Date().getTime(),
             status: 0
         };
-        listOfTodos.push(tmp);
+
+        return tmpObj;
     }
 
-    function pushDataOnPage(todoList) {
-        $.each(todoList, (key, value) => {
-            $("#sortable").prepend(`<li class='ui-state-default'>
-    <div class='checkbox'>
-        <label>
-            <input type="checkbox" value="" />${value.text}
-        </label>
-    </div>
-</li>`)
+    function todoRenderItem(todo) {
+        let render = `<li class='ui-state-default'> \
+                <div class='checkbox'> \
+                <label> \
+                <input type="checkbox" value="" /> ${todo.title} \
+                </label> \
+                </div> \
+                </li>`;
+        $("#sortable").append(render);
+    }
+
+    function todoRenderList(todos) {
+        console.log(todos);
+        $.each(todos, function () {
+            todoRenderItem(this);
         })
     }
 
-    $("#newTodo").onkeypress(function (event) {
-        if (event.which === '13'){
+    todoRenderList(listOfTodos);
 
+    $("#newTodo").on('keypress',event => {
+        let keyCode = event.keyCode || event.which;
+        if (keyCode == '13'){
+            let newTodoItem = takeInputData();
+            listOfTodos.push(newTodoItem);
+            todoRenderItem(newTodoItem);
+            $("#newTodo").val('');
         }
     })
 });
-
-
-
-console.log(objList());

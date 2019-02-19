@@ -22,17 +22,17 @@ $(document).ready(function() {
         }
     ];
 
-/*    let objList = () => {
-        return listOfTodos;
-    };*/
+    let $newTodo = $("#newTodo");
+    let $sortable = $("#sortable");
+    let $todoCount = $("#count-todos");
+
 
     function takeInputData(){
         var tmpObj = {
-            title: $("#newTodo").val(),
+            title: $newTodo.val(),
             createdAt: new Date().getTime(),
             status: 0
         };
-
         return tmpObj;
     }
 
@@ -44,11 +44,11 @@ $(document).ready(function() {
                 </label> \
                 </div> \
                 </li>`;
-        $("#sortable").append(render);
+        $sortable.append(render);
     }
 
     function todoCount(todosList) {
-        $("#count-todos").text(todosList.length);
+        $todoCount.text(todosList.length);
     }
 
     function todoRenderList(todos) {
@@ -60,14 +60,14 @@ $(document).ready(function() {
 
     todoRenderList(todosList);
 
-    $("#newTodo").on('keypress',event => {
+    $newTodo.on('keypress',event => {
         let keyCode = event.keyCode || event.which;
         if (keyCode == '13'){
             let newTodoItem = takeInputData();
             todosList.push(newTodoItem);
             todoCount(todosList);
             todoRenderItem(newTodoItem);
-            $("#newTodo").val('');
+            $newTodo.val('');
         }
     })
 });

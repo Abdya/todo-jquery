@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    let listOfTodos = [
+    let todosList = [
         {
             title: "FUCK EVERYONE WHO WILL READ THIS!!!",
             createdAt: new Date().getTime(),
@@ -47,20 +47,25 @@ $(document).ready(function() {
         $("#sortable").append(render);
     }
 
-    function todoRenderList(todos) {
-        console.log(todos);
-        $.each(todos, function () {
-            todoRenderItem(this);
-        })
+    function todoCount(todosList) {
+        $("#count-todos").text(todosList.length);
     }
 
-    todoRenderList(listOfTodos);
+    function todoRenderList(todos) {
+        $.each(todos, function () {
+            todoRenderItem(this);
+        });
+        todoCount(todos);
+    }
+
+    todoRenderList(todosList);
 
     $("#newTodo").on('keypress',event => {
         let keyCode = event.keyCode || event.which;
         if (keyCode == '13'){
             let newTodoItem = takeInputData();
-            listOfTodos.push(newTodoItem);
+            todosList.push(newTodoItem);
+            todoCount(todosList);
             todoRenderItem(newTodoItem);
             $("#newTodo").val('');
         }

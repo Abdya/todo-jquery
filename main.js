@@ -26,6 +26,7 @@ $(document).ready(function() {
     let $sortable = $("#sortable");
     let $todoCount = $("#count-todos");
 
+    $('.selectpicker').selectpicker();
 
     function takeInputData(){
         var tmpObj = {

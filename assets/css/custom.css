@@ -44,7 +44,10 @@ li.ui-state-default:last-child{
 }
 
 .todo-sort {
-    position: relative;
     margin: auto 0 auto auto;
     padding-right: 20px;
+}
+
+.sortSelect {
+    width: 150px;
 }

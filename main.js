@@ -2,22 +2,22 @@ $(document).ready(function() {
     let todosList = [
         {
             title: "FUCK EVERYONE WHO WILL READ THIS!!!",
-            createdAt: new Date(),
+            createdAt: 1551177360,
             status: 0
         },
         {
             title: "Take out the trash",
-            createdAt: new Date(),
+            createdAt: 1551177360,
             status: 0
         },
         {
             title: "Buy bread",
-            createdAt: new Date(),
+            createdAt: 1551177360,
             status: 1
         },
         {
             title: "Teach penguins to fly",
-            createdAt: new Date(),
+            createdAt: 1551177360,
             status: 2
         }
     ];
@@ -31,17 +31,13 @@ $(document).ready(function() {
     let $newTodo = $("#newTodo");
     let $sortable = $("#sortable");
     let $todoCount = $("#count-todos");
-    let $fireImage = $("#fire");
-    let $triangleImage = $("#triangle");
-    let $smileImage = $("#smile");
-
     $('.selectpicker').selectpicker();
 
     function takeInputData(){
         var date = moment();
         var tmpObj = {
             title: $newTodo.val(),
-            createdAt: date.format("DD-MM-YYYY"),
+            createdAt: date.unix(),
             status: 0
         };
         console.log(tmpObj.createdAt);
@@ -52,7 +48,7 @@ $(document).ready(function() {
         let render = `<li class='ui-state-default'> \
                 <div class='checkbox'> \
                 <label> \
-                <input type="checkbox" value="" /> ${todo.title} \
+                ${todo.title} ${moment.unix(todo.createdAt).format("MMMM Do YYYY, h:mm:ss a")} \
                 </label> \
                 </div> \
                 </li>`;
@@ -67,25 +63,23 @@ $(document).ready(function() {
         $.each(todos, function () {
             todoRenderItem(this);
         });
-        todoCount(todos);
     }
 
-    todoRenderList(todosList);
+    function renderApp() {
+        $sortable.empty();
+        todoCount(todosList);
+        todoRenderList(todosList)
+    }
 
     $newTodo.on('keypress', event => {
         let keyCode = event.keyCode || event.which;
         if (keyCode == '13') {
             let newTodoItem = takeInputData();
             todosList.push(newTodoItem);
-            todoCount(todosList);
-            todoRenderItem(newTodoItem);
+            renderApp();
             $newTodo.val('');
         }
     });
 
-    $fireImage.on('click', event => {
-        $(event.currentTarget).css('backgroundColor', '#FF8DA1');
-    })
-
-
+    renderApp();
 });

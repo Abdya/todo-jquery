@@ -45,24 +45,15 @@ li.ui-state-default:last-child{
 
 
 .sort-position {
-    margin: auto 0 auto auto;
-    padding-right: 20px;
+    margin: auto;
 }
 
-.status-image{
-    width: 20px;
-    height: 20px;
+.priority{
     display: inline-block;
     margin: auto 15px;
-    background-color: transparent;
     cursor: pointer;
 }
 
 #set-margin {
-    margin: auto auto;
-}
-
-.priority {
-    position: relative;
     margin: auto auto;
 }

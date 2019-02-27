@@ -3,34 +3,36 @@ $(document).ready(function() {
         {
             title: "FUCK EVERYONE WHO WILL READ THIS!!!",
             createdAt: 1551177360,
-            status: 0
+            priority: 0
+        },
+        {
+            title: "Teach penguins to fly",
+            createdAt: 1542177360,
+            priority: 2
         },
         {
             title: "Take out the trash",
             createdAt: 1551177360,
-            status: 0
+            priority: 0
         },
         {
             title: "Buy bread",
             createdAt: 1551177360,
-            status: 1
+            priority: 1
         },
-        {
-            title: "Teach penguins to fly",
-            createdAt: 1551177360,
-            status: 2
-        }
     ];
-    /*about status
-    * 0 - new
-    * 1 - in process
-    * 2 - done*/
+    /*about priority
+    * 0 - low
+    * 1 - middle
+    * 2 - high */
 
-    //console.log(todosList[0].createdAt);
 
     let $newTodo = $("#newTodo");
     let $sortable = $("#sortable");
     let $todoCount = $("#count-todos");
+    let $todoPriority = $("#pr-select");
+    let $sortSel = $("#sortSelect");
+
     $('.selectpicker').selectpicker();
 
     function takeInputData(){
@@ -38,9 +40,9 @@ $(document).ready(function() {
         var tmpObj = {
             title: $newTodo.val(),
             createdAt: date.unix(),
-            status: 0
+            priority: $todoPriority.val(),
         };
-        console.log(tmpObj.createdAt);
+        console.log(tmpObj.priority);
         return tmpObj;
     }
 
@@ -71,6 +73,14 @@ $(document).ready(function() {
         todoRenderList(todosList)
     }
 
+    function comparePriority(a,b) {
+        return b.priority - a.priority;
+    }
+
+    /*function compareDate(a,b) {
+
+    }*/
+
     $newTodo.on('keypress', event => {
         let keyCode = event.keyCode || event.which;
         if (keyCode == '13') {
@@ -78,6 +88,13 @@ $(document).ready(function() {
             todosList.push(newTodoItem);
             renderApp();
             $newTodo.val('');
+        }
+    });
+
+    $('#sortBy').on('click', event => {
+        if ($sortSel.val() == 'priority') {
+            todosList = todosList.sort(comparePriority);
+            renderApp();
         }
     });
 

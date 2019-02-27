@@ -22,8 +22,8 @@
                         <input type="text" id="newTodo" class="form-control add-todo" placeholder="Add todo">
                         <div class="row mt-3 priority">
                             <p>Set priority:
-                                <select class="selectpicker pr-select">
-                                    <option value="">None</option>
+                                <select id="pr-select" class="selectpicker">
+                                    <option value="-1">None</option>
                                     <option value="2">High</option>
                                     <option value="1">Medium</option>
                                     <option value="0">Low</option>
@@ -32,11 +32,12 @@
 
                         </div>
                         <div class="row mt-3">
-                            <p class="sort-position row-position">Sort by
-                                <select class="selectpicker">
+                            <p class="sort-position">Sort by
+                                <select id="sortSelect" class="selectpicker">
                                     <option value="date">Date</option>
                                     <option value="priority">Priority</option>
                                 </select>
+                                <button id="sortBy" class="btn btn-primary">Go!</button>
                             </p>
                         </div>
                         <hr>

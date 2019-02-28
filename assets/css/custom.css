@@ -19,6 +19,7 @@ li.ui-state-default{
     border:none;
     border-bottom:1px solid #ddd;
     word-break: break-all;
+    padding: 5px 0;
 }
 
 li.ui-state-default:last-child{
@@ -43,7 +44,6 @@ li.ui-state-default:last-child{
     position: relative;
 }
 
-
 .sort-position {
     margin: auto;
 }
@@ -56,4 +56,16 @@ li.ui-state-default:last-child{
 
 #set-margin {
     margin: auto auto;
+}
+
+li.high-priority{
+    background: rgba(255, 0, 0, 0.15);
+}
+
+li.middle-priority{
+    background: rgba(255, 255, 0, 0.4);
+}
+
+li.low-priority{
+    background: rgba(0, 128, 0, 0.05);
 }

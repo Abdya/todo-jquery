@@ -45,7 +45,10 @@ $(document).ready(function() {
     let $todoCount = $("#count-todos");
     let $todoPriority = $("#pr-select");
     let $sortSel = $("#sortSelect");
+    let $editTodo = $("#editTodoModal");
+    let $modalBody = $(".modal-body");
     let iter = 5;
+    let editingTodo = null;
 
     $('.selectpicker').selectpicker();
 
@@ -78,7 +81,8 @@ $(document).ready(function() {
         }
 
         let render = `<li data-id="${todo.id}" class='ui-state-default ${priorityClass}'> 
-                ${todo.title} ${moment.unix(todo.createdAt).format("MMMM Do YYYY, h:mm:ss a")}
+                <p>${todo.title} ${moment.unix(todo.createdAt).format("MMMM Do YYYY, h:mm:ss a")}</p>
+                <button type="button" data-id="${todo.id}" class="btn btn-outline-info btn-sm edit-btn">edit</button>
                 </li>`;
         $sortable.append(render);
     }
@@ -88,6 +92,22 @@ $(document).ready(function() {
             ${todo.title} ${moment.unix(todo.createdAt).format("MMMM Do YYYY, h:mm:ss a")}
             </li>`;
         $doneItems.append(render);
+    }
+
+    function editTodoModalRender() {
+        let $rendered = $(`<div><label class="col-form-label">Edit your Todo</label>
+                    <input type="text" class="form-control editing-todo-title" value="${editingTodo.title}" id="insertedTodo">
+                    <label class="col-form-label">Edit priority:</label>
+                        <select id="editing-todo-priority" class="selectpicker editing-todo-priority">
+                            <option value="-1" ${editingTodo.priority === -1 ? "selected" : ''}>None</option>
+                            <option value="2" ${editingTodo.priority === 2 ? "selected" : ''}>High</option>
+                            <option value="1" ${editingTodo.priority === 1 ? "selected" : ''}>Medium</option>
+                            <option value="0" ${editingTodo.priority === 0 ? "selected" : ''}>Low</option>
+                        </select></div>`);
+
+        $rendered.find('.selectpicker').selectpicker();
+
+        $modalBody.html($rendered);
     }
 
     function todoCount(todosList) {
@@ -132,6 +152,19 @@ $(document).ready(function() {
         return b.createdAt - a.createdAt;
     }
 
+    function findTodo(id) {
+        let result = null;
+
+        todosList.some((item) => {
+            if (item.id === id){
+                result = item;
+                return true;
+            }
+        });
+
+        return result;
+    }
+
     $newTodo.on('keypress', event => {
         let keyCode = event.keyCode || event.which;
         if (keyCode == '13') {
@@ -154,13 +187,26 @@ $(document).ready(function() {
     $('#sortable').on('click', "li.ui-state-default", (event) => {
         let id = parseInt($(event.currentTarget).data("id"));
 
-        todosList.some((item) => {
-            if (item.id === id) {
-                item.status = 1;
-                return true;
-            }
-        });
+        findTodo(id).status = 1;
 
+        renderApp();
+    });
+
+    $('#sortable').on('click', '.edit-btn', event => {
+        let id = parseInt($(event.currentTarget).data('id'));
+
+        event.stopPropagation();
+        $("#editTodoModal").modal();
+
+        editingTodo = findTodo(id);
+        editTodoModalRender();
+    });
+
+    $('.save-edit-todo').click(function() {
+        editingTodo.title = $('.editing-todo-title').val();
+        editingTodo.priority = parseInt($('#editing-todo-priority').val());
+        console.log(editingTodo);
+        $("#editTodoModal").modal('hide');
         renderApp();
     });
 

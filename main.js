@@ -48,8 +48,7 @@ $(document).ready(function() {
     let $editTodo = $("#editTodoModal");
     let $modalBody = $(".modal-body");
     let $todoPagination = $(".todo-pagination");
-    let pagesTotal = 2;
-    let currentPage = 2;
+    let currentPage = 1;
     let itemsPerPage = 2;
     let iter = 5;
     let editingTodo = null;
@@ -114,19 +113,12 @@ $(document).ready(function() {
         $modalBody.html($rendered);
     }
 
-    function todoCount(todosList) {
-        let tmpTodoCount = 0;
-        $.each(todosList, function () {
-            if (this.status === 0)
-                tmpTodoCount += 1;
-        });
-        $todoCount.text(tmpTodoCount);
+    function renderTodoCount(todoCount) {
+        $todoCount.text(todoCount);
     }
 
     function todoRenderList(todos) {
         $.each(todos, function () {
-            if (this.status === 1)
-                return true;
             todoRenderItem(this);
         });
     }
@@ -139,15 +131,30 @@ $(document).ready(function() {
         })
     }
 
+    function getTodos(offset, perPage) {
+        return todosList.filter(item => item.status !== 1).slice(offset, offset + perPage);
+    }
+
+    function getDoneTodos() {
+        return todosList.filter(item => item.status === 1);
+    }
+
+    function getTodoCount() {
+        return todosList.filter(item => item.status !== 1).length;
+    }
+
+    function getTotalTodoPages(count, perPage) {
+        return Math.ceil(count / perPage);
+    }
+
     function renderApp() {
         $sortable.empty();
         $doneItems.empty();
-        todoCount(todosList);
-        todoRenderList(todosList);
-        doneTodoRenderList(todosList);
-        renderPagination();
+        renderTodoCount(getTodoCount());
+        todoRenderList(getTodos((currentPage - 1) * itemsPerPage, itemsPerPage));
+        doneTodoRenderList(getDoneTodos());
+        renderPagination(getTotalTodoPages(getTodoCount(), itemsPerPage), currentPage);
     }
-
 
     function comparePriority(a,b) {
         return b.priority - a.priority;
@@ -169,11 +176,7 @@ $(document).ready(function() {
         return result;
     }
 
-    function make() {
-
-    }
-
-    function renderPagination() {
+    function renderPagination(pagesTotal, currentPage) {
         if (pagesTotal <= 1) {
             $todoPagination.html('');
             return;
@@ -214,9 +217,13 @@ $(document).ready(function() {
     }
 
     $(document).on('click', '.page-item', event => {
+        if ($(event.currentTarget).hasClass('disabled')) {
+            return;
+        }
+
         currentPage = parseInt($(event.currentTarget).data('page'));
+
         renderApp();
-        console.log($(event.currentTarget).data('page'));
     });
 
     $newTodo.on('keypress', event => {

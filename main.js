@@ -47,6 +47,10 @@ $(document).ready(function() {
     let $sortSel = $("#sortSelect");
     let $editTodo = $("#editTodoModal");
     let $modalBody = $(".modal-body");
+    let $todoPagination = $(".todo-pagination");
+    let pagesTotal = 2;
+    let currentPage = 2;
+    let itemsPerPage = 2;
     let iter = 5;
     let editingTodo = null;
 
@@ -98,7 +102,7 @@ $(document).ready(function() {
         let $rendered = $(`<div><label class="col-form-label">Edit your Todo</label>
                     <input type="text" class="form-control editing-todo-title" value="${editingTodo.title}" id="insertedTodo">
                     <label class="col-form-label">Edit priority:</label>
-                        <select id="editing-todo-priority" class="selectpicker editing-todo-priority">
+                        <select class="selectpicker editing-todo-priority">
                             <option value="-1" ${editingTodo.priority === -1 ? "selected" : ''}>None</option>
                             <option value="2" ${editingTodo.priority === 2 ? "selected" : ''}>High</option>
                             <option value="1" ${editingTodo.priority === 1 ? "selected" : ''}>Medium</option>
@@ -141,6 +145,7 @@ $(document).ready(function() {
         todoCount(todosList);
         todoRenderList(todosList);
         doneTodoRenderList(todosList);
+        renderPagination();
     }
 
 
@@ -161,9 +166,58 @@ $(document).ready(function() {
                 return true;
             }
         });
-
         return result;
     }
+
+    function make() {
+
+    }
+
+    function renderPagination() {
+        if (pagesTotal <= 1) {
+            $todoPagination.html('');
+            return;
+        }
+        let render = `<nav aria-label="Page navigation example">
+                          <ul class="pagination">`;
+        if (currentPage === 1) {
+            render += `<li class="page-item disabled">`;
+        } else {
+            render += `<li class="page-item" data-page="${currentPage - 1}">`
+        }
+                render += `<a class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Previous</span>
+                              </a>
+                            </li>`;
+        for (let i = 1; i <= pagesTotal; i++) {
+            if (i === currentPage) {
+                render += `<li class="page-item active" data-page="${i}"><a class="page-link" href="#">${i}</a></li>`;
+            } else {
+                render += `<li class="page-item" data-page="${i}"><a class="page-link" href="#">${i}</a></li>`;
+            }
+        }
+        if (currentPage === pagesTotal) {
+            render += `<li class="page-item disabled">`;
+        }else{
+            render += `<li class="page-item" data-page="${currentPage + 1}">`;
+        }
+        render += ` <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+              </ul>
+          </nav>`;
+
+        $todoPagination.html(render);
+    }
+
+    $(document).on('click', '.page-item', event => {
+        currentPage = parseInt($(event.currentTarget).data('page'));
+        renderApp();
+        console.log($(event.currentTarget).data('page'));
+    });
 
     $newTodo.on('keypress', event => {
         let keyCode = event.keyCode || event.which;
@@ -204,7 +258,7 @@ $(document).ready(function() {
 
     $('.save-edit-todo').click(function() {
         editingTodo.title = $('.editing-todo-title').val();
-        editingTodo.priority = parseInt($('#editing-todo-priority').val());
+        editingTodo.priority = parseInt($('select.editing-todo-priority').val());
         console.log(editingTodo);
         $("#editTodoModal").modal('hide');
         renderApp();

@@ -69,3 +69,10 @@ li.middle-priority{
 li.low-priority{
     background: rgba(0, 128, 0, 0.05);
 }
+.todo-pagination{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    max-width: 300px;
+    margin: 15px auto 0;
+}

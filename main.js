@@ -148,6 +148,14 @@ $(document).ready(function() {
     }
 
     function renderApp() {
+        let totalPages = getTotalTodoPages(getTodoCount(), itemsPerPage);
+        if (currentPage > totalPages){
+            currentPage = totalPages;
+        }
+        if (currentPage === 0 && totalPages !== 0) {
+            currentPage = 1;
+        }
+        console.log(currentPage);
         $sortable.empty();
         $doneItems.empty();
         renderTodoCount(getTodoCount());
